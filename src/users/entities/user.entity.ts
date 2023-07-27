@@ -11,6 +11,9 @@ export class UserEntity extends EntityBase{
     lastname: string;
 
     @Column()
+    username: string;
+
+    @Column()
     @Index({ unique: true })
     email: string;
 

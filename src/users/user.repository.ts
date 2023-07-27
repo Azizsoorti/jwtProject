@@ -10,4 +10,19 @@ export class UserRepository extends Repository<UserEntity>{
     async findUserDetailsByUsername(firstname: string): Promise<UserEntity>{
       return this.findOneBy({firstname});
   }
+
+  async createUser(user: UserEntity): Promise<UserEntity> { 
+    try { 
+      return await this.save(user); 
+    } catch (error) { 
+      if (error.code === '23505' && error.detail.includes('already exists')) { 
+        throw new ConflictException( 
+          'Username already exists.', 
+          'CustomErrorCode', 
+        ); // Pass the custom error message and code 
+      } 
+      throw error; 
+    } 
+  }
+
 }
